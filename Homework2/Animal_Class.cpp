@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 class Animal
@@ -38,22 +40,71 @@ public:
 	~Cow() {};
 };
 
+
+class Zoo
+{
+private:
+	Animal* animals[10]; // 동물 객체를 저장하는 포인터 배열
+	int count;  // 저장된 동물 객체의 수
+public:
+	Zoo() : count(0) {};
+
+	void addAnimal(Animal* animal)
+	{
+		if (count < 10)
+		{
+			animals[count++] = animal;
+		}
+		else
+		{
+			cout << "동물원이 꽉 차서 동물을 더 넣을 수 없습니다!" << endl;
+			return;
+		}
+	}
+
+	void performActions()
+	{
+		for (int i = 0; i < count; i++)
+		{
+			animals[i]->MakeSound();
+		}
+	}
+
+	~Zoo()
+	{
+		for (int i = 0; i < count; i++)
+		{
+			delete animals[i];
+		}
+	}
+};
+
+Animal* createRandomAnimal()
+{
+	int num = rand() % 3;
+	if (num == 0) {
+		return new Dog();
+	}
+	else if (num == 1) {
+		return new Cat();
+	}
+	else {
+		return new Cow();
+	}
+}
+
 int main()
 {
-	Animal* zoo[3];
+	srand(time(0));
 
-	zoo[0] = new Dog();  // Animal의 생성자 호출 후 Dog의 생성자 호출
-	zoo[1] = new Cat();
-	zoo[2] = new Cow();
+	Zoo zoo1;  // Zoo 객체 생성
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		zoo[i]->MakeSound();
+		zoo1.addAnimal(createRandomAnimal());
 	}
 
-	for (int i = 0; i < 3; i++)
-	{
-		delete zoo[i];	// 자식 클래스의 소멸자 호출 후 Animal 클래스의 소멸자 호출, 3번 반복
-	}
+	zoo1.performActions();
+
 	return 0;
 }
