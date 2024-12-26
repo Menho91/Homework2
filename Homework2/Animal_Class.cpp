@@ -95,16 +95,18 @@ Animal* createRandomAnimal()
 
 int main()
 {
-	srand(time(0));
+	srand(static_cast<int>(time(NULL)));  // 난수 생성을 위한 시드값 설정
 
 	Zoo zoo1;  // Zoo 객체 생성
 
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		zoo1.addAnimal(createRandomAnimal());
+		zoo1.addAnimal(createRandomAnimal());  // 객체 10개 생성하여 배열에 넣음
 	}
+	zoo1.addAnimal(createRandomAnimal()); // 객체가 배열에 더 들어가는 지 확인
+	zoo1.addAnimal(createRandomAnimal());
 
-	zoo1.performActions();
+	zoo1.performActions();  // 배열에 있는 객체 동작
 
 	return 0;
 }
